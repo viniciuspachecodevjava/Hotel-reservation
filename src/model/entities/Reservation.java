@@ -4,20 +4,30 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class Reservation {
+import controller.ReservationController;
+
+
+public class Reservation extends ReservationController {
 	private Integer roomNumber;
 	private Date checkin;
 	private Date checkout;
 	private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-	
+
 	public Reservation() {
 		super();
 	}
+
 	public Reservation(Integer roomNumber, Date checkin, Date checkout) {
-		super();
-		this.roomNumber = roomNumber;
-		this.checkin = checkin;
-		this.checkout = checkout;
+
+		if (!checkout.after(checkin)) {
+//			throw new MainException("\nCheck-out date must be after check-in date\n");
+			System.out.println("\nCheck-out date must be after check-in date\n");
+			addReservation();
+		} else {
+			this.roomNumber = roomNumber;
+			this.checkin = checkin;
+			this.checkout = checkout;
+		}
 	}
 
 	public Integer getRoomNumber() {
@@ -45,19 +55,11 @@ public class Reservation {
 		this.checkin = checkin;
 		this.checkout = checkout;
 	}
-	
-	@Override 
+
+
+	@Override
 	public String toString() {
-		return " Room "
-				+ roomNumber
-				+ ", "
-				+ "check-in: "
-				+ sdf.format(checkin)
-				+ ", "
-				+ "check-out "
-				+ sdf.format(checkout)
-				+ ", "
-				+ duration()
-				+ " nights";
+		return " Room " + roomNumber + ", " + "check-in: " + sdf.format(checkin) + ", " + "check-out "
+				+ sdf.format(checkout) + ", " + duration() + " nights";
 	}
 }
